@@ -1,29 +1,17 @@
 #pragma once
-#include "SFML/Graphics/Transformable.hpp"
-#include <SFML/System/Time.hpp>
-#include <SFML/Graphics/Drawable.hpp>
-#include <SFML/Graphics/RenderStates.hpp>
-#include <SFML/Graphics/RenderTarget.hpp>
-#include <SFML/Graphics/Transform.hpp>
-#include <SFML/Graphics/VertexArray.hpp>
-#include <SFML/System/Vector2.hpp>
+#include "SFML/System/Vector2.hpp"
+#include <SFML/Graphics.hpp>
 
-class Ship
+struct Ship 
 	: public sf::Drawable
-	, public sf::Transformable
 {
-public:
 	Ship();
+	sf::VertexArray vertecies;
 
-	void setSpeed(float speed);
-	void update(const sf::Time& dt);
+	virtual void draw(sf::RenderTarget& window, sf::RenderStates states) const;
 
-	void handleRealTime(const sf::Time dt);
-
-private:
-	sf::VertexArray mShip;
-	float mSpeed;
-	float mAngle;
-	
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	sf::Transform transform;
+	sf::Vector2f position;
+	sf::Vector2f velocity;
+	float rotation;
 };

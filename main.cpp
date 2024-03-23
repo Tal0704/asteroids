@@ -46,29 +46,27 @@ void processInput()
 
 void update(const sf::Time& dt)
 {
-	#define SHIP_SPEED 10.f
-	#define ROT_SPEED 400
-	#define DRAG 0.02
+	#define SHEEP_SPEED 30
+	#define ROT_SPEED 3
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		ship.rotation -= dt.asSeconds() * ROT_SPEED;
+		ship.rotation += dt.asSeconds() * PI * ROT_SPEED;
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		ship.rotation += dt.asSeconds() * ROT_SPEED;
+		ship.rotation -= dt.asSeconds() * PI * ROT_SPEED;
 	}
 
-	sf::Vector2f direction;
-	direction.x = std::cos(ship.rotation * PI / 180 + 0.5 * PI);
-	direction.y = std::sin(ship.rotation * PI / 180 + 0.5 * PI);
+	sf::Vector2f direction = {
+		std::cos(ship.rotation), std::sin(ship.rotation)
+	};
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		ship.velocity = ship.velocity + (direction * dt.asSeconds() * SHIP_SPEED);
+		ship.velocity = ship.velocity + (direction * dt.asSeconds());
 	}
-	ship.velocity.x *= 1.0 - DRAG;
-	ship.velocity.y *= 1.0 - DRAG;
-	ship.position += ship.velocity;
+	
+	// ship.transform.rotate(ship.rotation).
 }
 
 void render()
