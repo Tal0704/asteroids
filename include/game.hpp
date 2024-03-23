@@ -9,10 +9,9 @@ class Game
 public:
 	Game();
 	void run();
-
 	void processInput();
-	
 	void render();
+	void update(const sf::Time& dt);
 
 private:
 	sf::RenderWindow mWindow;

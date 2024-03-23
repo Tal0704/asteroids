@@ -1,0 +1,79 @@
+syntax on
+set nowrap
+set belloff=all
+set nu
+set tabstop=4 softtabstop=4
+set shiftwidth=4
+set noexpandtab
+set rnu
+set incsearch
+set nocompatible
+set t_Co=256
+set splitbelow
+set backspace=2
+set t_u7=
+set shell=/bin/bash
+set ttimeoutlen=1
+set timeoutlen=1000
+
+filetype off
+set shellslash
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+	Plugin 'VundleVim/Vundle.vim'
+	Plugin 'vim-airline/vim-airline'
+	Plugin 'bkad/CamelCaseMotion'
+	Plugin 'mg979/vim-visual-multi', {'branch': 'master'}
+	Plugin 'junegunn/fzf', { 'do': { -> fzf#install() } }
+	Plugin 'junegunn/fzf.vim'
+	Plugin 'morhetz/gruvbox'
+	Plugin 'jiangmiao/auto-pairs'
+	Plugin 'tpope/vim-surround'
+	Plugin 'tpope/vim-fugitive'
+	Plugin 'ycm-core/YouCompleteMe'
+	Plugin 'drewtempelmeyer/palenight.vim'
+call vundle#end()
+filetype plugin indent on
+
+colorscheme gruvbox
+set bg=dark
+
+let mapleader = ","
+map <leader>p :Files <CR>
+nnoremap <leader>i :YcmCompleter GoTo<CR>
+let g:camelcasemotion_key = '<leader>'
+let NERDTreeQuitOnOpen=1
+let g:ycm_confirm_extra_conf = 0
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
+" YouCompleteMe syntax highlighter
+let g:ycm_enable_semantic_highlighting=1
+
+" YouCompleteMe symbols
+let g:ycm_warning_symbol = 'W'
+let g:ycm_error_symbol = 'E'
+let g:ycm_max_diagnostics_to_display = 1000
+
+" call prop_type_add( 'YCM_HL_bracket', { 'highlight': 'Normal' } )
+
+" no preview on YouCompleteMe
+set completeopt-=preview
+
+" Put plugins and dictionaries in this dir (also on Windows)
+ let vimDir = '$HOME/.vim'
+
+ if stridx(&runtimepath, expand(vimDir)) == -1
+   " vimDir is not on runtimepath, add it
+     let &runtimepath.=','.vimDir
+     endif
+
+" Keep undo history across sessions by storing it in a file
+if has('persistent_undo')
+	let myUndoDir = expand(vimDir . '/undodir')
+	" Create dirs
+	call system('mkdir ' . vimDir)
+	call system('mkdir ' . myUndoDir)
+	let &undodir = myUndoDir
+	set undofile
+endif
