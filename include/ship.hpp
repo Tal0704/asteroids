@@ -1,10 +1,12 @@
 #pragma once
 #include "SFML/System/Vector2.hpp"
 #include <SFML/Graphics.hpp>
+#include <memory>
 
 struct Ship 
 	: public sf::Drawable
 {
+	typedef std::unique_ptr<Ship> Ptr;
 	Ship();
 	sf::VertexArray vertecies;
 
