@@ -4,8 +4,8 @@
 #include <random>
 
 #define PI 3.14159265
+#define ASTEROID_SPEED 2.0f
 #define SCALE sf::Vector2f(30.0f, 30.f)
-#define ORIGIN sf::Vector2f(150.f, 150.f)
 
 Asteroid::Asteroid()
 	:mVertecies(sf::PrimitiveType::LineStrip)
@@ -28,11 +28,25 @@ Asteroid::Asteroid()
 		mVertecies[i].position = sf::Vector2f(radius * std::cos(angle), std::sin(angle) * radius);
 	}
 	mVertecies.append(mVertecies[0]);
+
+	uniformFloatDist = std::uniform_real_distribution<float>(-10.f, 10.f);
+	velocity.x = uniformFloatDist(e);
+	velocity.y = uniformFloatDist(e);
+	
+	uniformIntDist = std::uniform_int_distribution<size_t>(100, 400);
+	
+	position.x = uniformIntDist(e);
+	position.y = uniformIntDist(e);
 }
 
 void Asteroid::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	states.transform.translate(ORIGIN + position).scale(SCALE);
+	states.transform.translate(position).scale(SCALE);
 
 	target.draw(mVertecies, states);
+}
+
+void Asteroid::update(const sf::Time& dt)
+{
+	position += velocity * dt.asSeconds() * ASTEROID_SPEED;
 }
