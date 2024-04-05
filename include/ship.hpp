@@ -2,6 +2,7 @@
 #include "SFML/System/Vector2.hpp"
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <pallet.hpp>
 
 class Ship 
 	: public sf::Drawable
@@ -10,6 +11,7 @@ public:
 	typedef std::unique_ptr<Ship> Ptr;
 	Ship(const sf::Vector2f& borders);
 	sf::VertexArray vertecies;
+	sf::VertexArray tail;
 
 	void update(const sf::Time& dt);
 
@@ -20,4 +22,5 @@ public:
 	sf::Vector2f position;
 	sf::Vector2f velocity;
 	float rotation;
+	std::vector<Pallet::Ptr> mPallets;
 };

@@ -1,0 +1,9 @@
+-x
+c++
+-Wall
+-Wextra
+-Werror
+-Iinclude
+-Ilibs/sfml/include
+-Wno-unused-paramater
+-Wno-unused-variable

@@ -1,7 +1,10 @@
+#include "SFML/Window/Event.hpp"
+#include "SFML/Window/Keyboard.hpp"
 #include <memory>
-#include <ship.hpp>
-#include <asteroid.hpp>
 #include <SFML/Graphics.hpp>
+#include <ship.hpp>
+#include <pallet.hpp>
+#include <asteroid.hpp>
 #include <vector>
 
 #define FPS sf::seconds(1/60.f)
@@ -20,11 +23,12 @@ int main()
 	ship = std::make_unique<Ship>(sf::Vector2f(window.getSize()));
 	sf::Clock clock;
 	sf::Time timeSinceLastUpdate = sf::Time::Zero;
-	asteroids.resize(4);
-	for(size_t i = 0; i < 4; i++)
+	asteroids.resize(20);
+	for(size_t i = 0; i < asteroids.size(); i++)
 	{
 		asteroids[i] = std::make_unique<Asteroid>();
 	}
+
 	while(window.isOpen())
 	{
 		sf::Time dt = clock.restart();
@@ -37,17 +41,16 @@ int main()
 		}
 		render();
 	}
-	
 	return 0;
 }
-
 
 void processInput()
 {
 	sf::Event event;
 	while(window.pollEvent(event))
 	{
-		if (event.type == sf::Event::Closed)
+		bool isClose = (event.type == sf::Event::Closed) || ((event.type == sf::Event::KeyPressed) && event.key.code == sf::Keyboard::Q);
+		if (isClose)
 			window.close();
 	}
 }
