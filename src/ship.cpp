@@ -1,5 +1,4 @@
-#include "SFML/Graphics/PrimitiveType.hpp"
-#include "SFML/Window/Keyboard.hpp"
+#include <SFML/Graphics.hpp>
 #include <cmath>
 #include <iostream>
 #include <memory>
@@ -25,10 +24,11 @@ vector2 velocityFromSpeed(float speed, float angle)
 	return direction;
 }
 
-Ship::Ship(const sf::Vector2f& borders)
-	: vertecies(sf::PrimitiveType::LineStrip, 6)
+Ship::Ship(const Context& context)
+	: mContext(context)
+	, vertecies(sf::PrimitiveType::LineStrip, 6)
 	, tail(sf::LineStrip, 3)
-	, borders(borders)
+	, mClock()
 {
 	vertecies[0].position = sf::Vector2f(-0.4f, -0.5f);
 	vertecies[1].position = sf::Vector2f(0.0f, 0.5f);
@@ -52,7 +52,10 @@ void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		showTail = !showTail;
 	}
-	states.transform.translate(position).scale(SCALE).rotate(rotation);
+	states.transform *= mTransform;
+
+	for (const auto& pallet: mPallets)
+		target.draw(*pallet);
 
 	target.draw(vertecies, states);
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -60,15 +63,13 @@ void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		if (showTail)
 			target.draw(tail, states);
 	}
-	for (const auto& pallet: mPallets)
-		target.draw(*pallet);
 }
 
 void Ship::update(const sf::Time& dt)
 {
 	#define SHIP_SPEED 3.f
 	#define ROT_SPEED 500
-	#define PALLET_SPEED 12.f
+	#define PALLET_SPEED 50.f
 	#define DRAG 0.02
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
@@ -84,18 +85,22 @@ void Ship::update(const sf::Time& dt)
 		velocity = velocity + (velocityFromSpeed(SHIP_SPEED, rotation) * dt.asSeconds() * SHIP_SPEED);
 	}
 
-// 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-//	{
-//		auto pallet = std::make_unique<Pallet>(0.0f, 0.5f);
-//		
-//		pallet->setVelocity(velocityFromSpeed(PALLET_SPEED, rotation));
-//		std::cout << pallet->getPosition() << "\n";
-//		mPallets.push_back(std::move(pallet));
-//	}
+ 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+	{
+		if(mClock.getElapsedTime().asMilliseconds() % 100 == 0)
+		{
+			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(mTransform.transformPoint(vertecies[1].position));
+
+			pallet->setVelocity(velocityFromSpeed(PALLET_SPEED, rotation));
+			mPallets.push_back(std::move(pallet));
+		}
+	}
 
 	velocity.x *= 1.0 - DRAG;
 	velocity.y *= 1.0 - DRAG;
 	position += velocity;
+
+	sf::Vector2u borders = mContext.window.getSize();
 
 	if (position.x < 0)
 		position.x = borders.x;
@@ -110,4 +115,6 @@ void Ship::update(const sf::Time& dt)
 	{
 		pallet->update(dt);
 	}
+	mTransform = sf::Transform::Identity;
+	mTransform.translate(position).scale(SCALE).rotate(rotation);
 }

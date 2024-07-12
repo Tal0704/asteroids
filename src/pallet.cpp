@@ -1,5 +1,5 @@
 #include <pallet.hpp>
-#define SIZE 5
+#define SIZE 1
 
 Pallet::Pallet(const vector2& position)
 	: mPallet(SIZE)
