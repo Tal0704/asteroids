@@ -3,6 +3,7 @@
 #include <asteroid.hpp>
 #include <context.hpp>
 #include <ship.hpp>
+#include <memory>
 
 class App
 {
@@ -23,6 +24,7 @@ private:
 	sf::Event mEvent;
 
 	sf::Clock mClock;
+
 
 	const sf::Time fps = sf::seconds(1/60.f);
 };

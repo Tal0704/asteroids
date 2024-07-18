@@ -4,7 +4,13 @@ App::App()
 	: mWindow(sf::VideoMode(400, 400), "Asteroids!!")
 	, mContext(mWindow)
 	, mShip(std::make_unique<Ship>(mContext))
-{  }
+{ 
+	mAsteroids.resize(10);
+	for(auto& asteroid: mAsteroids)
+	{
+		asteroid = std::make_unique<Asteroid>();
+	}
+}
 
 void App::run()
 {
