@@ -5,6 +5,7 @@ App::App()
 	, mContext(mWindow)
 	, mShip(std::make_unique<Ship>(mContext))
 { 
+	mWindow.setKeyRepeatEnabled(false);
 	mAsteroids.resize(10);
 	for(auto& asteroid: mAsteroids)
 	{
@@ -34,6 +35,7 @@ void App::processInput()
 {
 	while(mWindow.pollEvent(mEvent))
 	{
+		mShip->processInput(mEvent);
 		bool isClose = (mEvent.type == sf::Event::Closed) || ((mEvent.type == sf::Event::KeyPressed) && mEvent.key.code == sf::Keyboard::Q);
 		if (isClose)
 			mWindow.close();

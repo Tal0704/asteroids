@@ -87,13 +87,7 @@ void Ship::update(const sf::Time& dt)
 
  	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 	{
-		if(mClock.getElapsedTime().asMilliseconds() % 100 == 0)
-		{
-			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(mTransform.transformPoint(vertecies[1].position));
 
-			pallet->setVelocity(velocityFromSpeed(PALLET_SPEED, rotation));
-			mPallets.push_back(std::move(pallet));
-		}
 	}
 
 	velocity.x *= 1.0 - DRAG;
@@ -117,4 +111,17 @@ void Ship::update(const sf::Time& dt)
 	}
 	mTransform = sf::Transform::Identity;
 	mTransform.translate(position).scale(SCALE).rotate(rotation);
+}
+
+void Ship::processInput(const sf::Event& event)
+{
+	if (event.type == event.KeyPressed)
+	{
+		if(event.key.code == sf::Keyboard::Space)
+		{
+			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(mTransform.transformPoint(vertecies[1].position));
+			pallet->setVelocity(velocityFromSpeed(PALLET_SPEED, rotation));
+			mPallets.push_back(std::move(pallet));
+		}
+	}
 }

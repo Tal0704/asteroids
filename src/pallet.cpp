@@ -3,6 +3,7 @@
 
 Pallet::Pallet(const vector2& position)
 	: mPallet(SIZE)
+	, mTtl(sf::seconds(1.5))
 {
 	mPallet.setFillColor(sf::Color::White);
 	mPallet.setPosition(position);

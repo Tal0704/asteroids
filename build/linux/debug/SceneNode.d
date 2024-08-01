@@ -1,3 +1,3 @@
-build/linux/debug/SceneNode.o: src/SceneNode.cpp include/SceneNode.hpp
+build/linux/debug/sceneNode.o: src/sceneNode.cpp include/sceneNode.hpp
 
-include/SceneNode.hpp:
+include/sceneNode.hpp:

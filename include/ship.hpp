@@ -11,6 +11,7 @@ public:
 	Ship(const Context& context);
 
 	void update(const sf::Time& dt);
+	void processInput(const sf::Event& event);
 	
 	virtual void draw(sf::RenderTarget& window, sf::RenderStates states) const;
 

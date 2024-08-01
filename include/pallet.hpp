@@ -25,5 +25,6 @@ private:
 	vector2 mVel;
 
 	sf::CircleShape mPallet;
+	sf::Time mTtl;
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };

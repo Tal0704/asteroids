@@ -16,6 +16,7 @@ private:
 	void processInput();
 	void render();
 	void update(const sf::Time& dt);
+	void updatePressedKeys();
 
 	sf::RenderWindow mWindow;
 	Context mContext;
@@ -24,7 +25,6 @@ private:
 	sf::Event mEvent;
 
 	sf::Clock mClock;
-
 
 	const sf::Time fps = sf::seconds(1/60.f);
 };
