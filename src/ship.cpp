@@ -8,12 +8,14 @@
 #define SCALE sf::Vector2f(30.0f, 30.f)
 #define ORIGIN sf::Vector2f(150.f, 150.f)
 
+#ifndef NDEBUG
 std::ostream& operator<<(std::ostream& stream, const vector2 v)
 {
 	stream << v.x << ", " << v.y;
 
 	return stream;
 }
+#endif
 
 vector2 velocityFromSpeed(float speed, float angle)
 {
@@ -44,7 +46,7 @@ Ship::Ship(const Context& context)
 	position = ORIGIN;
 }
 
-void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Ship::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	static sf::Clock clock;
 	static bool showTail = true;
@@ -83,11 +85,6 @@ void Ship::update(const sf::Time& dt)
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		velocity = velocity + (velocityFromSpeed(SHIP_SPEED, rotation) * dt.asSeconds() * SHIP_SPEED);
-	}
-
- 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-	{
-
 	}
 
 	velocity.x *= 1.0 - DRAG;

@@ -1,9 +1,10 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <sceneNode.hpp>
 
 class Asteroid
-	: public sf::Drawable
+	: public SceneNode
 {
 public:
 	typedef std::unique_ptr<Asteroid> Ptr;
@@ -15,6 +16,6 @@ public:
 	void update(const sf::Time& dt);
 
 private:
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	sf::VertexArray mVertecies;
 };

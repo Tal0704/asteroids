@@ -2,9 +2,10 @@
 #include <context.hpp>
 #include <SFML/Graphics.hpp>
 #include <pallet.hpp>
+#include <sceneNode.hpp>
 
 class Ship 
-	: public sf::Drawable
+	: public SceneNode
 {
 public:
 	typedef std::unique_ptr<Ship> Ptr;
@@ -13,7 +14,7 @@ public:
 	void update(const sf::Time& dt);
 	void processInput(const sf::Event& event);
 	
-	virtual void draw(sf::RenderTarget& window, sf::RenderStates states) const;
+	virtual void drawCurrent(sf::RenderTarget& window, sf::RenderStates states) const;
 
 private:
 	const Context &mContext;

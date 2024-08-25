@@ -39,7 +39,7 @@ Asteroid::Asteroid()
 	position.y = uniformIntDist(e);
 }
 
-void Asteroid::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Asteroid::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform.translate(position).scale(SCALE);
 

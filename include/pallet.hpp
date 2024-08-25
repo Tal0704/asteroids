@@ -1,11 +1,12 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <memory>
+#include <sceneNode.hpp>
 
 typedef sf::Vector2f vector2;
 
 class Pallet
-	: public sf::Drawable
+	: public SceneNode
 {
 public:
 	typedef std::unique_ptr<Pallet> Ptr;
@@ -26,5 +27,5 @@ private:
 
 	sf::CircleShape mPallet;
 	sf::Time mTtl;
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 };

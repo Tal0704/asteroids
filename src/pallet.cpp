@@ -14,7 +14,7 @@ Pallet::Pallet(float x, float y)
 	Pallet(vector2(x, y));
 }
 
-void Pallet::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Pallet::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(mPallet, states);
 }
