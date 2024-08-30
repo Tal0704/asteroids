@@ -46,7 +46,7 @@ void Asteroid::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 	target.draw(mVertecies, states);
 }
 
-void Asteroid::update(const sf::Time& dt)
+void Asteroid::updateCurrent(const sf::Time& dt)
 {
 	position += velocity * dt.asSeconds() * ASTEROID_SPEED;
 }

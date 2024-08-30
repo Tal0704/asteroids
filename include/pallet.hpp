@@ -17,13 +17,13 @@ public:
 	void setPosition(float x, float y);
 	vector2 getPosition();
                           
-	void setVelocity(const vector2& velocity);
-	vector2 getVelocity();
-	void update(const sf::Time& dt);
+	void setDirection(const vector2& dir);
+	void updateCurrent(const sf::Time& dt);
 
 private:
 	vector2 mPos;
-	vector2 mVel;
+	vector2 mDirection;
+	static constexpr float mSpeed = 50.f;
 
 	sf::CircleShape mPallet;
 	sf::Time mTtl;

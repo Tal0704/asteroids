@@ -13,7 +13,7 @@ public:
 	sf::Vector2f position;
 	sf::Vector2f velocity;
 
-	void update(const sf::Time& dt);
+	void updateCurrent(const sf::Time& dt);
 
 private:
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;

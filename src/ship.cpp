@@ -4,32 +4,14 @@
 #include <memory>
 #include <ship.hpp>
 
-#define PI 3.14159265
 #define SCALE sf::Vector2f(30.0f, 30.f)
 #define ORIGIN sf::Vector2f(150.f, 150.f)
-
-#ifndef NDEBUG
-std::ostream& operator<<(std::ostream& stream, const vector2 v)
-{
-	stream << v.x << ", " << v.y;
-
-	return stream;
-}
-#endif
-
-vector2 velocityFromSpeed(float speed, float angle)
-{
-	sf::Vector2f direction;
-	direction.x = speed * std::cos(angle * PI / 180 + 0.5 * PI);
-	direction.y = speed * std::sin(angle * PI / 180 + 0.5 * PI);
-
-	return direction;
-}
 
 Ship::Ship(const Context& context)
 	: mContext(context)
 	, vertecies(sf::PrimitiveType::LineStrip, 6)
 	, tail(sf::LineStrip, 3)
+	, mDirection(0, -1)
 	, mClock()
 {
 	vertecies[0].position = sf::Vector2f(-0.4f, -0.5f);
@@ -56,9 +38,6 @@ void Ship::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 	states.transform *= mTransform;
 
-	for (const auto& pallet: mPallets)
-		target.draw(*pallet);
-
 	target.draw(vertecies, states);
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
@@ -67,29 +46,33 @@ void Ship::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
-void Ship::update(const sf::Time& dt)
+void Ship::updateCurrent(const sf::Time& dt)
 {
 	#define SHIP_SPEED 3.f
-	#define ROT_SPEED 500
+	#define ROT_SPEED 5
 	#define PALLET_SPEED 50.f
 	#define DRAG 0.02
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
 	{
-		rotation -= dt.asSeconds() * ROT_SPEED;
+		sf::Transform t;
+		t.rotate(-ROT_SPEED);
+		mDirection = t.transformPoint(mDirection);
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
-		rotation += dt.asSeconds() * ROT_SPEED;
+		sf::Transform t;
+		t.rotate(ROT_SPEED);
+		mDirection = t.transformPoint(mDirection);
 	}
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		velocity = velocity + (velocityFromSpeed(SHIP_SPEED, rotation) * dt.asSeconds() * SHIP_SPEED);
+		mVelocity += mDirection * SHIP_SPEED * dt.asSeconds();
 	}
 
-	velocity.x *= 1.0 - DRAG;
-	velocity.y *= 1.0 - DRAG;
-	position += velocity;
+	constexpr float drag = (1.0 - DRAG);
+	mVelocity = mVelocity * drag;
+	position += (mVelocity);
 
 	sf::Vector2u borders = mContext.window.getSize();
 
@@ -102,12 +85,8 @@ void Ship::update(const sf::Time& dt)
 		position.x = 0;
 	if (position.y > borders.y)
 		position.y = 0;
-	for(const auto& pallet: mPallets)
-	{
-		pallet->update(dt);
-	}
 	mTransform = sf::Transform::Identity;
-	mTransform.translate(position).scale(SCALE).rotate(rotation);
+	mTransform.translate(position).scale(SCALE).rotate(angleFromVect(mDirection) - 90);
 }
 
 void Ship::processInput(const sf::Event& event)
@@ -117,8 +96,8 @@ void Ship::processInput(const sf::Event& event)
 		if(event.key.code == sf::Keyboard::Space)
 		{
 			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(mTransform.transformPoint(vertecies[1].position));
-			pallet->setVelocity(velocityFromSpeed(PALLET_SPEED, rotation));
-			mPallets.push_back(std::move(pallet));
+			pallet->setDirection(mDirection);
+			attachChild(std::move(pallet));
 		}
 	}
 }

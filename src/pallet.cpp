@@ -19,19 +19,14 @@ void Pallet::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) cons
 	target.draw(mPallet, states);
 }
 
-void Pallet::setVelocity(const vector2& vel)
+void Pallet::setDirection(const sf::Vector2f& dir)
 {
-	mVel = vel;
+	mDirection = dir;
 }
 
-vector2 Pallet::getVelocity()
+void Pallet::updateCurrent(const sf::Time& dt)
 {
-	return mVel;
-}
-
-void Pallet::update(const sf::Time& dt)
-{
-	mPallet.move(mVel * dt.asSeconds());
+	mPallet.move(mDirection * mSpeed * dt.asSeconds());
 }
 
 

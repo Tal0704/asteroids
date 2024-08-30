@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <pallet.hpp>
 #include <sceneNode.hpp>
+#include <helpers.hpp>
 
 class Ship 
 	: public SceneNode
@@ -11,7 +12,7 @@ public:
 	typedef std::unique_ptr<Ship> Ptr;
 	Ship(const Context& context);
 
-	void update(const sf::Time& dt);
+	void updateCurrent(const sf::Time& dt);
 	void processInput(const sf::Event& event);
 	
 	virtual void drawCurrent(sf::RenderTarget& window, sf::RenderStates states) const;
@@ -23,9 +24,8 @@ private:
 
 	sf::Transform transform;
 	sf::Vector2f position;
-	sf::Vector2f velocity;
+	sf::Vector2f mVelocity;
 	sf::Transform mTransform;
-	float rotation;
-	std::vector<Pallet::Ptr> mPallets;
+	sf::Vector2f mDirection;
 	sf::Clock mClock;
 };

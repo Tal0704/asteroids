@@ -44,9 +44,9 @@ void App::processInput()
 
 void App::update(const sf::Time& dt)
 {
-	mShip->update(dt);
+	mShip->updateCurrent(dt);
 	for(auto& asteroid: mAsteroids)
-		asteroid->update(dt);
+		asteroid->updateCurrent(dt);
 }
 
 void App::render()

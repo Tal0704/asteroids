@@ -15,6 +15,16 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 }
 
+void SceneNode::updateCurrent(const sf::Time& dt)
+{
+}
+
+void SceneNode::update(const sf::Time& dt)
+{
+	for (auto& child: mChildren)
+		child->update(dt);
+}
+
 void SceneNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	
