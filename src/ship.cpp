@@ -86,6 +86,8 @@ void Ship::updateCurrent(const sf::Time& dt)
 		position.y = 0;
 	mTransform = sf::Transform::Identity;
 	mTransform.translate(position).scale(SCALE).rotate(angleFromVect(mDirection) - 90);
+
+	removeChildren();
 }
 
 void Ship::processInput(const sf::Event& event)
@@ -101,6 +103,14 @@ void Ship::processInput(const sf::Event& event)
 	}
 }
 
-void Ship::removeChildren()
+void Ship::removeChildren() 
 {
+	for(size_t i = 0; i < size(); i++)
+	{
+		const auto& child = this->at(i);
+		if(child.toRemove())
+		{
+			detachChild(child);
+		}
+	}
 }

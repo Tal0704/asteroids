@@ -48,3 +48,23 @@ sn::Ptr SceneNode::detachChild(const sn& child)
 	mChildren.erase(foundVal);
 	return std::move(result);
 }
+
+const SceneNode& SceneNode::operator[](size_t index) const
+{
+	return *mChildren[index];
+}
+
+const SceneNode& SceneNode::at(size_t index) const
+{
+	return *mChildren[index];
+}
+
+size_t SceneNode::size()
+{
+	return mChildren.size();
+}
+
+bool SceneNode::toRemove() const
+{
+	return isPendingRemoval;
+}

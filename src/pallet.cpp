@@ -38,9 +38,13 @@ void Pallet::setDirection(const sf::Vector2f& dir)
 void Pallet::updateCurrent(const sf::Time& dt)
 {
 	mPallet.move(mDirection * mSpeed * dt.asSeconds());
+	if(isDead())
+	{
+		isPendingRemoval = true;
+	}
 }
 
 bool Pallet::isDead()
 {
-	return mContext.clock.getElapsedTime() - mCreationTime >= mTtl;
+	return (mContext.clock.getElapsedTime() - mCreationTime) >= mTtl;
 }

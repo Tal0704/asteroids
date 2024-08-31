@@ -18,6 +18,16 @@ public:
 
 	virtual void update(const sf::Time& dt)final;
 
+	const SceneNode& operator[](size_t index) const;
+	const SceneNode& at(size_t index) const;
+
+	size_t size();
+
+	bool toRemove() const;
+
+protected:
+	bool isPendingRemoval = false;
+
 private:
 	std::vector<Ptr> mChildren;
 	SceneNode* mParent;
