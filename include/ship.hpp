@@ -28,4 +28,6 @@ private:
 	sf::Transform mTransform;
 	sf::Vector2f mDirection;
 	sf::Clock mClock;
+
+	void removeChildren();
 };

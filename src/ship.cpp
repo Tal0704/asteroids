@@ -100,3 +100,7 @@ void Ship::processInput(const sf::Event& event)
 		}
 	}
 }
+
+void Ship::removeChildren()
+{
+}

@@ -3,7 +3,7 @@
 ################################################################################
 
 # Executable name
-EXEC = program
+EXEC = asteroids
 
 # Build, bin, assets, and install directories (bin and build root directories are kept for clean)
 BUILD_DIR_ROOT = build
