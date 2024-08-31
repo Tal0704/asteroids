@@ -1,21 +1,32 @@
 #include <pallet.hpp>
 #define SIZE 1
 
-Pallet::Pallet(const vector2& position)
-	: mPallet(SIZE)
+Pallet::Pallet(const vector2& position, Context context)
+	: mContext(context)
+	, mPallet(SIZE)
 	, mTtl(sf::seconds(1.5))
+	, mCreationTime(mContext.clock.getElapsedTime())
 {
-	mPallet.setFillColor(sf::Color::White);
-	mPallet.setPosition(position);
+	initPallet(position);
 }
 
-Pallet::Pallet(float x, float y)
+Pallet::Pallet(float x, float y, Context context)
+	: mContext(context)
+	, mPallet(SIZE)
+	, mTtl(sf::seconds(1.5))
 {
-	Pallet(vector2(x, y));
+	initPallet(sf::Vector2f(x, y));
+}
+
+void Pallet::initPallet(const sf::Vector2f& v)
+{
+	mPallet.setFillColor(sf::Color::White);
+	mPallet.setPosition(v);
 }
 
 void Pallet::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	states.transform *= getTransform();
 	target.draw(mPallet, states);
 }
 
@@ -29,18 +40,7 @@ void Pallet::updateCurrent(const sf::Time& dt)
 	mPallet.move(mDirection * mSpeed * dt.asSeconds());
 }
 
-
-void Pallet::setPosition(const vector2& pos)
+bool Pallet::isDead()
 {
-	mPallet.setPosition(pos);
-}
-
-void Pallet::setPosition(float x, float y)
-{
-	setPosition(vector2(x, y));
-}
-
-vector2 Pallet::getPosition()
-{
-	return mPallet.getPosition();
+	return mContext.clock.getElapsedTime() - mCreationTime >= mTtl;
 }

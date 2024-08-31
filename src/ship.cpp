@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <cmath>
-#include <iostream>
 #include <memory>
 #include <ship.hpp>
 
@@ -95,7 +94,7 @@ void Ship::processInput(const sf::Event& event)
 	{
 		if(event.key.code == sf::Keyboard::Space)
 		{
-			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(mTransform.transformPoint(vertecies[1].position));
+			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(mTransform.transformPoint(vertecies[1].position), mContext);
 			pallet->setDirection(mDirection);
 			attachChild(std::move(pallet));
 		}
