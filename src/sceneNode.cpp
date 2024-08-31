@@ -21,6 +21,7 @@ void SceneNode::updateCurrent(const sf::Time& dt)
 
 void SceneNode::update(const sf::Time& dt)
 {
+	updateCurrent(dt);
 	for (auto& child: mChildren)
 		child->update(dt);
 }

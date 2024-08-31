@@ -16,13 +16,13 @@ public:
 	void attachChild(Ptr child);
 	Ptr  detachChild(const SceneNode& child);
 
-	virtual void updateCurrent(const sf::Time& dt);
+	virtual void update(const sf::Time& dt)final;
 
 private:
 	std::vector<Ptr> mChildren;
 	SceneNode* mParent;
+	virtual void updateCurrent(const sf::Time& dt);
 
-	virtual void update(const sf::Time& dt)final;
 	virtual void drawCurrent(sf::RenderTarget& traget, sf::RenderStates states) const;
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const final;
 };
