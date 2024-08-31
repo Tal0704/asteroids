@@ -20,3 +20,13 @@ sf::Vector2f velocityFromSpeed(float speed, float angle)
 
 	return direction;
 }
+
+#ifndef NDEBUG
+
+std::ostream& operator<<(std::ostream& stream, const sf::Vector2f& v)
+{
+	stream << v.x << ", " << v.y;
+	return stream;
+}
+
+#endif
