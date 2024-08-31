@@ -3,4 +3,5 @@
 
 Context::Context(const sf::RenderWindow& window)
 	: window(window)
+	, clock()
 {}
