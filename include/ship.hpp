@@ -2,25 +2,28 @@
 #include <context.hpp>
 #include <SFML/Graphics.hpp>
 #include <pallet.hpp>
-#include <sceneNode.hpp>
 #include <helpers.hpp>
+#include <cassert>
 
 class Ship 
-	: public SceneNode
+	: public sf::Shape
 {
 public:
 	typedef std::unique_ptr<Ship> Ptr;
 	Ship(const Context& context);
 
-	void updateCurrent(const sf::Time& dt);
+	void update(const sf::Time& dt);
 	void processInput(const sf::Event& event);
+
+	virtual std::size_t getPointCount() const;
+	virtual sf::Vector2f getPoint(std::size_t index) const;
 	
-	virtual void drawCurrent(sf::RenderTarget& window, sf::RenderStates states) const;
+	virtual void draw(sf::RenderTarget& window, sf::RenderStates states) const;
 
 private:
 	const Context &mContext;
-	sf::VertexArray vertecies;
-	sf::VertexArray tail;
+	sf::VertexArray mVertecies;
+	sf::VertexArray mTail;
 
 	sf::Transform transform;
 	sf::Vector2f position;
@@ -29,5 +32,5 @@ private:
 	sf::Vector2f mDirection;
 	sf::Clock mClock;
 
-	void removeChildren();
+	std::vector<Pallet::Ptr> mPallets;
 };

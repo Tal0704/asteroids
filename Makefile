@@ -24,7 +24,7 @@ INCLUDES := -I$(INCLUDE_DIR) -IDependencies/SFML/include
 CPPFLAGS = $(INCLUDES) -MMD -MP
 
 # C++ compiler settings
-CXX = clang++
+CXX = g++
 CXXFLAGS = -std=c++20
 WARNINGS = -Wall -Wpedantic -Wextra -Wno-unused-parameter
 

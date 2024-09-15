@@ -9,7 +9,8 @@ App::App()
 	mAsteroids.resize(10);
 	for(auto& asteroid: mAsteroids)
 	{
-		asteroid = std::make_unique<Asteroid>();
+		auto ast = std::make_unique<Asteroid>(mContext);
+		asteroid = std::move(ast);
 	}
 }
 

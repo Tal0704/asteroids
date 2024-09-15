@@ -8,26 +8,28 @@
 
 Ship::Ship(const Context& context)
 	: mContext(context)
-	, vertecies(sf::PrimitiveType::LineStrip, 6)
-	, tail(sf::LineStrip, 3)
+	, mVertecies(sf::PrimitiveType::LineStrip, 9)
+	, mTail(sf::LineStrip, 3)
 	, mDirection(0, -1)
 	, mClock()
+	, mPallets()
 {
-	vertecies[0].position = sf::Vector2f(-0.4f, -0.5f);
-	vertecies[1].position = sf::Vector2f(0.0f, 0.5f);
-	vertecies[2].position = sf::Vector2f(0.4f, -0.5f);
-	vertecies[3].position = sf::Vector2f(0.3f, -0.4f);
-	vertecies[4].position = sf::Vector2f(-0.3f, -0.4f);
-	vertecies[5].position = sf::Vector2f(-0.4f, -0.5f);
+	mVertecies[0].position = sf::Vector2f(-0.4f, -0.5f);
+	mVertecies[1].position = sf::Vector2f(0.0f, 0.5f);
+	mVertecies[2].position = sf::Vector2f(0.4f, -0.5f);
+	mVertecies[3].position = sf::Vector2f(0.3f, -0.4f);
+	mVertecies[4].position = sf::Vector2f(-0.3f, -0.4f);
+	mVertecies[5].position = sf::Vector2f(-0.4f, -0.5f);
 
-	tail[0].position = sf::Vector2f(0.3f, -0.4f);
-	tail[1].position = sf::Vector2f(0.0, -0.6);
-	tail[2].position = sf::Vector2f(-0.3f, -0.4f);
+	mVertecies[6].position = sf::Vector2f(0.3f, -0.4f);
+	mVertecies[7].position = sf::Vector2f(0.0, -0.6);
+	mVertecies[8].position = sf::Vector2f(-0.3f, -0.4f);
+	sf::Shape::update();
 
 	position = ORIGIN;
 }
 
-void Ship::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	static sf::Clock clock;
 	static bool showTail = true;
@@ -37,15 +39,15 @@ void Ship::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 	}
 	states.transform *= mTransform;
 
-	target.draw(vertecies, states);
+	target.draw(mVertecies, states);
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
 		if (showTail)
-			target.draw(tail, states);
+			target.draw(mTail, states);
 	}
 }
 
-void Ship::updateCurrent(const sf::Time& dt)
+void Ship::update(const sf::Time& dt)
 {
 	#define SHIP_SPEED 3.f
 	#define ROT_SPEED 5
@@ -86,8 +88,6 @@ void Ship::updateCurrent(const sf::Time& dt)
 		position.y = 0;
 	mTransform = sf::Transform::Identity;
 	mTransform.translate(position).scale(SCALE).rotate(angleFromVect(mDirection) - 90);
-
-	removeChildren();
 }
 
 void Ship::processInput(const sf::Event& event)
@@ -96,21 +96,22 @@ void Ship::processInput(const sf::Event& event)
 	{
 		if(event.key.code == sf::Keyboard::Space)
 		{
-			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(mTransform.transformPoint(vertecies[1].position), mContext);
+			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(mTransform.transformPoint(mVertecies[1].position), mContext);
 			pallet->setDirection(mDirection);
-			attachChild(std::move(pallet));
+			mPallets.push_back(std::move(pallet));
 		}
 	}
 }
 
-void Ship::removeChildren() 
+
+std::size_t Ship::getPointCount() const
 {
-	for(size_t i = 0; i < size(); i++)
-	{
-		const auto& child = this->at(i);
-		if(child.toRemove())
-		{
-			detachChild(child);
-		}
-	}
+	return mVertecies.getVertexCount();
+}
+
+sf::Vector2f Ship::getPoint(std::size_t index) const
+{
+	std::cout << index << "\n";
+	assert(index < getPointCount());
+	return mVertecies[index].position;
 }

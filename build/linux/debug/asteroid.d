@@ -1,4 +1,4 @@
 build/linux/debug/asteroid.o: src/asteroid.cpp include/asteroid.hpp \
-  include/sceneNode.hpp
+ include/context.hpp
 include/asteroid.hpp:
-include/sceneNode.hpp:
+include/context.hpp:

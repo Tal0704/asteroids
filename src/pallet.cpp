@@ -1,33 +1,20 @@
 #include <pallet.hpp>
-#define SIZE 1
 
 Pallet::Pallet(const vector2& position, Context context)
 	: mContext(context)
-	, mPallet(SIZE)
 	, mTtl(sf::seconds(1.5))
 	, mCreationTime(mContext.clock.getElapsedTime())
 {
-	initPallet(position);
+	sf::Shape::update();
+	// initPallet(position);
 }
 
 Pallet::Pallet(float x, float y, Context context)
 	: mContext(context)
-	, mPallet(SIZE)
 	, mTtl(sf::seconds(1.5))
 {
-	initPallet(sf::Vector2f(x, y));
-}
-
-void Pallet::initPallet(const sf::Vector2f& v)
-{
-	mPallet.setFillColor(sf::Color::White);
-	mPallet.setPosition(v);
-}
-
-void Pallet::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	states.transform *= getTransform();
-	target.draw(mPallet, states);
+	sf::Shape::update();
+	/* initPallet(sf::Vector2f(x, y)); */
 }
 
 void Pallet::setDirection(const sf::Vector2f& dir)
@@ -35,16 +22,21 @@ void Pallet::setDirection(const sf::Vector2f& dir)
 	mDirection = dir;
 }
 
-void Pallet::updateCurrent(const sf::Time& dt)
+void Pallet::update(const sf::Time& dt)
 {
-	mPallet.move(mDirection * mSpeed * dt.asSeconds());
-	if(isDead())
-	{
-		isPendingRemoval = true;
-	}
+	this->move(mDirection * mSpeed * dt.asSeconds());
 }
 
-bool Pallet::isDead()
+bool Pallet::isPendingRemoveal() const
 {
 	return (mContext.clock.getElapsedTime() - mCreationTime) >= mTtl;
+}
+
+const sf::Vector2f& Pallet::getRadius() const { return mRadius; }
+
+std::size_t Pallet::getPointCount() const { return 1; }
+
+sf::Vector2f Pallet::getPoint(std::size_t index) const
+{
+	return this->getPosition();
 }

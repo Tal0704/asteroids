@@ -7,8 +7,9 @@
 #define ASTEROID_SPEED 2.0f
 #define SCALE sf::Vector2f(30.0f, 30.f)
 
-Asteroid::Asteroid()
+Asteroid::Asteroid(const Context& context)
 	:mVertecies(sf::PrimitiveType::LineStrip)
+	, mContext(context)
 {
 	float radius;
 
@@ -39,14 +40,25 @@ Asteroid::Asteroid()
 	position.y = uniformIntDist(e);
 }
 
-void Asteroid::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+void Asteroid::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform.translate(position).scale(SCALE);
 
 	target.draw(mVertecies, states);
 }
 
-void Asteroid::updateCurrent(const sf::Time& dt)
+void Asteroid::update(const sf::Time& dt)
 {
 	position += velocity * dt.asSeconds() * ASTEROID_SPEED;
+}
+
+
+std::size_t Asteroid::getPointCount() const
+{
+	return mVertecies.getVertexCount();
+}
+
+sf::Vector2f Asteroid::getPoint(std::size_t index) const
+{
+	return mVertecies[index].position;
 }
