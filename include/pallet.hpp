@@ -7,7 +7,7 @@
 typedef sf::Vector2f vector2;
 
 class Pallet
-	: public sf::Shape
+	: public sf::CircleShape
 {
 public:
 	typedef std::unique_ptr<Pallet> Ptr;
@@ -20,9 +20,7 @@ public:
 
 	bool isPendingRemoveal() const;
 
-	const sf::Vector2f& getRadius() const;
-	virtual sf::Vector2f getPoint(std::size_t index) const;
-	virtual std::size_t getPointCount() const;
+	float getRadius() const;
 
 private:
 	Context mContext;
@@ -31,6 +29,4 @@ private:
 
 	sf::Time mTtl;
 	sf::Time mCreationTime;
-
-	sf::Vector2f mRadius;
 };

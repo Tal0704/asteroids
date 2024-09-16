@@ -20,6 +20,8 @@ public:
 	
 	virtual void draw(sf::RenderTarget& window, sf::RenderStates states) const;
 
+	const std::vector<Pallet::Ptr>& getPallets();
+
 private:
 	const Context &mContext;
 	sf::VertexArray mVertecies;

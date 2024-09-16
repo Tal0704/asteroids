@@ -45,6 +45,11 @@ void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
 		if (showTail)
 			target.draw(mTail, states);
 	}
+
+	for(auto& pallet: mPallets)
+	{
+		target.draw(*pallet);
+	}
 }
 
 void Ship::update(const sf::Time& dt)
@@ -111,7 +116,11 @@ std::size_t Ship::getPointCount() const
 
 sf::Vector2f Ship::getPoint(std::size_t index) const
 {
-	std::cout << index << "\n";
 	assert(index < getPointCount());
 	return mVertecies[index].position;
+}
+
+const std::vector<Pallet::Ptr>& Ship::getPallets()
+{
+	return mPallets;
 }

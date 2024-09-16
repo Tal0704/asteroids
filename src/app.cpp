@@ -48,12 +48,19 @@ void App::update(const sf::Time& dt)
 	mShip->update(dt);
 	for(auto& asteroid: mAsteroids)
 		asteroid->update(dt);
+
+	const auto& pallets = mShip->getPallets();
+	for(const auto& pallet: pallets)
+		pallet->update(dt);
 }
 
 void App::render()
 {
 	mWindow.clear();
 	mWindow.draw(*mShip);
+	const auto& pallets = mShip->getPallets();
+	for(const auto& pallet: pallets)
+		mWindow.draw(*pallet);
 	for(const auto& asteroid: mAsteroids)
 		mWindow.draw(*asteroid);
 	mWindow.display();
