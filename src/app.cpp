@@ -54,9 +54,7 @@ void App::update(const sf::Time& dt)
 		pallet->update(dt);
 	processCollisions();
 	if(isShipDead)
-	{
 		std::cout << "Dead\n";
-	}
 }
 
 void App::render()

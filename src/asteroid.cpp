@@ -12,8 +12,6 @@ Asteroid::Asteroid(const Context& context)
 	:mVertecies(sf::PrimitiveType::LineStrip)
 	, mContext(context)
 {
-	float radius;
-
 	std::random_device r;
 	std::default_random_engine e(r());
 
@@ -24,10 +22,10 @@ Asteroid::Asteroid(const Context& context)
 
 	for(size_t i = 0; i < mVertecies.getVertexCount(); i++)
 	{
-		radius = uniformFloatDist(e);
+		mRadius = uniformFloatDist(e);
 		float angle = 2 * PI / mVertecies.getVertexCount();
 		angle *= i;
-		mVertecies[i].position = sf::Vector2f(radius * std::cos(angle), std::sin(angle) * radius);
+		mVertecies[i].position = sf::Vector2f(mRadius * std::cos(angle), std::sin(angle) * mRadius);
 	}
 	mVertecies.append(mVertecies[0]);
 
@@ -66,5 +64,10 @@ sf::Vector2f Asteroid::getPoint(std::size_t index) const
 
 bool Asteroid::collideShip(const Ship& ship)
 {
-	return mVertecies.getBounds().intersects(ship.getBounds());
+	sf::Transform shipTransform = ship.getTransform();
+	sf::Vector2f gloabalShipOrigin = shipTransform.transformPoint(ship.getPosition());
+
+	std::cout << "gloabalShipOrigin: " << gloabalShipOrigin << "\n";
+
+	return distance(position, gloabalShipOrigin) <= mRadius;
 }

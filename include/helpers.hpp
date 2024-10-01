@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Graphics/Rect.hpp>
 #include <cmath>
 
 #define PI 3.14159265
@@ -16,4 +17,5 @@ sf::Vector2f velocityFromSpeed(float speed, float angle);
 
 std::ostream& operator<<(std::ostream& stream, const sf::Vector2f& v);
 
+std::ostream& operator<<(std::ostream& stream, const sf::FloatRect& v);
 #endif

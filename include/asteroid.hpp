@@ -26,5 +26,7 @@ private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	sf::VertexArray mVertecies;
 
+	float mRadius;
+
 	Context mContext;
 };

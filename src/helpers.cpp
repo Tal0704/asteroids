@@ -29,4 +29,10 @@ std::ostream& operator<<(std::ostream& stream, const sf::Vector2f& v)
 	return stream;
 }
 
+std::ostream& operator<<(std::ostream& stream, const sf::FloatRect& v)
+{
+	stream << v.left <<  ", " << v.top;
+	return stream;
+}
+
 #endif
