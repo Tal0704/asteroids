@@ -21,7 +21,7 @@ public:
 	virtual void draw(sf::RenderTarget& window, sf::RenderStates states) const;
 
 	const std::vector<Pallet::Ptr>& getPallets();
-
+	sf::FloatRect getBounds() const;
 private:
 	const Context &mContext;
 	sf::VertexArray mVertecies;

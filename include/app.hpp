@@ -4,6 +4,7 @@
 #include <context.hpp>
 #include <ship.hpp>
 #include <memory>
+#include <vector>
 
 class App
 {
@@ -18,6 +19,8 @@ private:
 	void update(const sf::Time& dt);
 	void updatePressedKeys();
 
+	void processCollisions();
+
 	sf::RenderWindow mWindow;
 	Context mContext;
 	std::vector<Asteroid::Ptr> mAsteroids;
@@ -27,4 +30,6 @@ private:
 	sf::Clock mClock;
 
 	const sf::Time fps = sf::seconds(1/60.f);
+
+	bool isShipDead = false;
 };

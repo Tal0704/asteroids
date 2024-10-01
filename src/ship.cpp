@@ -21,6 +21,7 @@ Ship::Ship(const Context& context)
 	mVertecies[4].position = sf::Vector2f(-0.3f, -0.4f);
 	mVertecies[5].position = sf::Vector2f(-0.4f, -0.5f);
 
+	// tail
 	mVertecies[6].position = sf::Vector2f(0.3f, -0.4f);
 	mVertecies[7].position = sf::Vector2f(0.0, -0.6);
 	mVertecies[8].position = sf::Vector2f(-0.3f, -0.4f);
@@ -123,4 +124,9 @@ sf::Vector2f Ship::getPoint(std::size_t index) const
 const std::vector<Pallet::Ptr>& Ship::getPallets()
 {
 	return mPallets;
+}
+
+sf::FloatRect Ship::getBounds() const
+{
+	return mVertecies.getBounds();
 }

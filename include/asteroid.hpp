@@ -3,6 +3,8 @@
 #include <memory>
 #include <context.hpp>
 
+class Ship;
+
 class Asteroid
 	: public sf::Shape
 {
@@ -17,6 +19,8 @@ public:
 	virtual sf::Vector2f getPoint(std::size_t index) const;
 
 	void update(const sf::Time& dt);
+
+	bool collideShip(const Ship& ship);
 
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;

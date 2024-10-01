@@ -1,5 +1,6 @@
 #include "SFML/Graphics/PrimitiveType.hpp"
 #include "SFML/System/Vector2.hpp"
+#include <ship.hpp>
 #include <asteroid.hpp>
 #include <random>
 
@@ -61,4 +62,9 @@ std::size_t Asteroid::getPointCount() const
 sf::Vector2f Asteroid::getPoint(std::size_t index) const
 {
 	return mVertecies[index].position;
+}
+
+bool Asteroid::collideShip(const Ship& ship)
+{
+	return mVertecies.getBounds().intersects(ship.getBounds());
 }
