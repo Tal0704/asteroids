@@ -6,7 +6,7 @@
 
 #define PI 3.14159265
 #define ASTEROID_SPEED 2.0f
-#define SCALE sf::Vector2f(30.0f, 30.f)
+#define SCALE 30.f
 
 Asteroid::Asteroid(const Context& context)
 	:mVertecies(sf::PrimitiveType::LineStrip)
@@ -41,7 +41,7 @@ Asteroid::Asteroid(const Context& context)
 
 void Asteroid::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	states.transform.translate(position).scale(SCALE);
+	states.transform.translate(position).scale(SCALE, SCALE);
 
 	target.draw(mVertecies, states);
 }
@@ -67,7 +67,5 @@ bool Asteroid::collideShip(const Ship& ship)
 	sf::Transform shipTransform = ship.getTransform();
 	sf::Vector2f gloabalShipOrigin = shipTransform.transformPoint(ship.getPosition());
 
-	std::cout << "gloabalShipOrigin: " << gloabalShipOrigin << "\n";
-
-	return distance(position, gloabalShipOrigin) <= mRadius;
+	return distance(position, gloabalShipOrigin) <= (mRadius * SCALE);
 }

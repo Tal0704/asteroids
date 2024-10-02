@@ -6,8 +6,9 @@ App::App()
 	, mShip(std::make_unique<Ship>(mContext))
 { 
 	mWindow.setKeyRepeatEnabled(false);
-	mAsteroids.reserve(10);
-	for(size_t i = 0; i < 10; i++)
+	const size_t numOfAsteroids = 1;
+	mAsteroids.reserve(numOfAsteroids);
+	for(size_t i = 0; i < numOfAsteroids; i++)
 	{
 		mAsteroids.emplace_back(std::make_unique<Asteroid>(mContext));
 	}
@@ -52,8 +53,10 @@ void App::update(const sf::Time& dt)
 	for(const auto& pallet: pallets)
 		pallet->update(dt);
 	processCollisions();
+#ifndef NDEBUG
 	if(isShipDead)
 		std::cout << "Dead\n";
+#endif
 }
 
 void App::render()
@@ -73,6 +76,16 @@ void App::processCollisions()
 {
 	std::vector<Asteroid::Ptr> asteroidsToRemove;
 	asteroidsToRemove.reserve(mAsteroids.size());
+	const auto& pallets = mShip->getPallets();
+
+	for(const auto& pallet: pallets)
+	{
+		if(mShip->getGlobalBounds().contains(pallet->getPosition()))
+		{
+			std::cout << "pallet hit the ship!\n";
+		}
+	}
+
 	for(const auto& asteroid: mAsteroids)
 	{
 		if(asteroid->collideShip(*mShip))

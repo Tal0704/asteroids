@@ -3,7 +3,7 @@
 #include <memory>
 #include <ship.hpp>
 
-#define SCALE sf::Vector2f(30.0f, 30.f)
+#define SCALE 30.0f
 #define ORIGIN sf::Vector2f(150.f, 150.f)
 
 Ship::Ship(const Context& context)
@@ -92,8 +92,11 @@ void Ship::update(const sf::Time& dt)
 		position.x = 0;
 	if (position.y > borders.y)
 		position.y = 0;
+
+	this->setPosition(position);
+	this->setRotation(angleFromVect(mDirection));
 	mTransform = sf::Transform::Identity;
-	mTransform.translate(position).scale(SCALE).rotate(angleFromVect(mDirection) - 90);
+	mTransform.translate(position).scale(SCALE, SCALE).rotate(angleFromVect(mDirection) - 90);
 }
 
 void Ship::processInput(const sf::Event& event)
@@ -126,7 +129,3 @@ const std::vector<Pallet::Ptr>& Ship::getPallets()
 	return mPallets;
 }
 
-sf::FloatRect Ship::getBounds() const
-{
-	return mVertecies.getBounds();
-}
