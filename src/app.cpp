@@ -6,11 +6,10 @@ App::App()
 	, mShip(std::make_unique<Ship>(mContext))
 { 
 	mWindow.setKeyRepeatEnabled(false);
-	mAsteroids.resize(10);
-	for(auto& asteroid: mAsteroids)
+	mAsteroids.reserve(10);
+	for(size_t i = 0; i < 10; i++)
 	{
-		auto ast = std::make_unique<Asteroid>(mContext);
-		asteroid = std::move(ast);
+		mAsteroids.emplace_back(std::make_unique<Asteroid>(mContext));
 	}
 }
 
