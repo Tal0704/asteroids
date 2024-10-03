@@ -26,10 +26,7 @@ private:
 	sf::VertexArray mVertecies;
 	sf::VertexArray mTail;
 
-	sf::Transform transform;
-	sf::Vector2f position;
 	sf::Vector2f mVelocity;
-	sf::Transform mTransform;
 	sf::Vector2f mDirection;
 	sf::Clock mClock;
 

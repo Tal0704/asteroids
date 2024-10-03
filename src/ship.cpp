@@ -27,7 +27,7 @@ Ship::Ship(const Context& context)
 	mVertecies[8].position = sf::Vector2f(-0.3f, -0.4f);
 	sf::Shape::update();
 
-	position = ORIGIN;
+	setPosition(ORIGIN);
 }
 
 void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -38,7 +38,7 @@ void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		showTail = !showTail;
 	}
-	states.transform *= mTransform;
+	states.transform *= getTransform();
 
 	target.draw(mVertecies, states);
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
@@ -79,24 +79,22 @@ void Ship::update(const sf::Time& dt)
 
 	constexpr float drag = (1.0 - DRAG);
 	mVelocity = mVelocity * drag;
-	position += (mVelocity);
+	move(mVelocity);
 
 	sf::Vector2u borders = mContext.window.getSize();
 
-	if (position.x < 0)
-		position.x = borders.x;
-	if (position.y < 0)
-		position.y = borders.y;
+	if (getPosition().x < 0)
+		setPosition(borders.x, getPosition().y);
+	if (getPosition().y < 0)
+		setPosition(getPosition().x, borders.y);
 	
-	if (position.x > borders.x)
-		position.x = 0;
-	if (position.y > borders.y)
-		position.y = 0;
+	if (getPosition().x > borders.x)
+		setPosition(0, getPosition().y);
+	if (getPosition().y > borders.y)
+		setPosition(getPosition().x, 0);
 
-	this->setPosition(position);
-	this->setRotation(angleFromVect(mDirection));
-	mTransform = sf::Transform::Identity;
-	mTransform.translate(position).scale(SCALE, SCALE).rotate(angleFromVect(mDirection) - 90);
+	this->setRotation(angleFromVect(mDirection) - 90.f);
+	setScale(SCALE, SCALE);
 }
 
 void Ship::processInput(const sf::Event& event)
@@ -105,9 +103,10 @@ void Ship::processInput(const sf::Event& event)
 	{
 		if(event.key.code == sf::Keyboard::Space)
 		{
-			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(mTransform.transformPoint(mVertecies[1].position), mContext);
+			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(
+					getTransform().transformPoint(mVertecies[1].position), mContext);
 			pallet->setDirection(mDirection);
-			mPallets.push_back(std::move(pallet));
+			mPallets.emplace_back(std::move(pallet));
 		}
 	}
 }
