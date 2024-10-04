@@ -10,7 +10,7 @@ Ship::Ship(const Context& context)
 	: mContext(context)
 	, mVertecies(sf::PrimitiveType::LineStrip, 9)
 	, mTail(sf::LineStrip, 3)
-	, mDirection(0, -1)
+	, mNormal(0, -1)
 	, mClock()
 	, mPallets()
 {
@@ -63,18 +63,21 @@ void Ship::update(const sf::Time& dt)
 	{
 		sf::Transform t;
 		t.rotate(-ROT_SPEED);
-		mDirection = t.transformPoint(mDirection);
+		mNormal = t.transformPoint(mNormal);
+		setRotation(angleFromVect(mNormal) - 90.f);
+
 	}
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
 	{
 		sf::Transform t;
 		t.rotate(ROT_SPEED);
-		mDirection = t.transformPoint(mDirection);
+		mNormal = t.transformPoint(mNormal);
+		setRotation(angleFromVect(mNormal) - 90.f);
 	}
 
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
 	{
-		mVelocity += mDirection * SHIP_SPEED * dt.asSeconds();
+		mVelocity += mNormal * SHIP_SPEED * dt.asSeconds();
 	}
 
 	constexpr float drag = (1.0 - DRAG);
@@ -93,7 +96,6 @@ void Ship::update(const sf::Time& dt)
 	if (getPosition().y > borders.y)
 		setPosition(getPosition().x, 0);
 
-	this->setRotation(angleFromVect(mDirection) - 90.f);
 	setScale(SCALE, SCALE);
 }
 
@@ -105,7 +107,7 @@ void Ship::processInput(const sf::Event& event)
 		{
 			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(
 					getTransform().transformPoint(mVertecies[1].position), mContext);
-			pallet->setDirection(mDirection);
+			pallet->setDirection(mNormal);
 			mPallets.emplace_back(std::move(pallet));
 		}
 	}

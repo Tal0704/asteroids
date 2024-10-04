@@ -27,7 +27,7 @@ private:
 	sf::VertexArray mTail;
 
 	sf::Vector2f mVelocity;
-	sf::Vector2f mDirection;
+	sf::Vector2f mNormal;
 	sf::Clock mClock;
 
 	std::vector<Pallet::Ptr> mPallets;
