@@ -32,4 +32,9 @@ private:
 	const sf::Time fps = sf::seconds(1/60.f);
 
 	bool isShipDead = false;
+
+#ifndef NDEBUG
+	sf::Font mFont;
+	sf::Text mDebugText;
+#endif
 };

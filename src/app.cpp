@@ -12,6 +12,13 @@ App::App()
 	{
 		mAsteroids.emplace_back(std::make_unique<Asteroid>(mContext));
 	}
+#ifndef NDEBUG
+	mFont.loadFromFile("media/fonts/PressStart2P.ttf");
+	mDebugText.setFont(mFont);
+	mDebugText.setCharacterSize(10);
+	mDebugText.setFillColor(sf::Color::Green);
+	mDebugText.setString("pallet didn't hit the ship!");
+#endif
 }
 
 void App::run()
@@ -62,6 +69,7 @@ void App::update(const sf::Time& dt)
 void App::render()
 {
 	mWindow.clear();
+	mWindow.draw(mDebugText);
 	mWindow.draw(*mShip);
 	const auto& pallets = mShip->getPallets();
 	for(const auto& pallet: pallets)
@@ -82,7 +90,13 @@ void App::processCollisions()
 	{
 		if(mShip->getGlobalBounds().contains(pallet->getPosition()))
 		{
-			std::cout << "pallet hit the ship!\n";
+			mDebugText.setFillColor(sf::Color::Red);
+			mDebugText.setString("pallet hit the ship!");
+		}
+		else
+		{
+			mDebugText.setFillColor(sf::Color::Green);
+			mDebugText.setString("pallet didn't hit the ship!");
 		}
 	}
 
@@ -101,4 +115,3 @@ void App::processCollisions()
 	/* 	mAsteroids.erase(foundAsteroid); */
 	/* } */
 }
-

@@ -28,6 +28,7 @@ Ship::Ship(const Context& context)
 	sf::Shape::update();
 
 	setPosition(ORIGIN);
+	setRotation(180);
 }
 
 void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
