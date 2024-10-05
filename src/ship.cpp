@@ -69,7 +69,6 @@ void Ship::update(const sf::Time& dt)
 	move(mVelocity * dt.asSeconds());
 
 	sf::Vector2u borders = mContext.window.getSize();
-
 	if (getPosition().x < 0)
 		setPosition(borders.x, getPosition().y);
 	if (getPosition().y < 0)
@@ -91,10 +90,12 @@ void Ship::processInput(const sf::Event& event)
 			std::unique_ptr<Pallet> pallet = std::make_unique<Pallet>(
 					getTransform().transformPoint(mVertecies[1].position), mContext);
 			pallet->setDirection(mNormal);
+			pallet->move(mNormal * 4.f);
 			mPallets.emplace_back(std::move(pallet));
 		}
 	}
 }
+
 void Ship::processRealTime()
 {
 	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
