@@ -48,6 +48,7 @@ void App::processInput()
 		if (isClose)
 			mWindow.close();
 	}
+	mShip->processRealTime();
 }
 
 void App::update(const sf::Time& dt)

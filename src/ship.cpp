@@ -29,6 +29,7 @@ Ship::Ship(const Context& context)
 
 	setPosition(ORIGIN);
 	setRotation(180);
+	setScale(SCALE, SCALE);
 }
 
 void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -57,33 +58,15 @@ void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Ship::update(const sf::Time& dt)
 {
 	#define SHIP_SPEED 3.f
-	#define ROT_SPEED 5
+	#define ROT_SPEED 3
 	#define PALLET_SPEED 50.f
 	#define DRAG 0.02
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-	{
-		sf::Transform t;
-		t.rotate(-ROT_SPEED);
-		mNormal = t.transformPoint(mNormal);
-		setRotation(angleFromVect(mNormal) - 90.f);
 
-	}
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-	{
-		sf::Transform t;
-		t.rotate(ROT_SPEED);
-		mNormal = t.transformPoint(mNormal);
-		setRotation(angleFromVect(mNormal) - 90.f);
-	}
-
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-	{
-		mVelocity += mNormal * SHIP_SPEED * dt.asSeconds();
-	}
+	setRotation(angleFromVect(mNormal * dt.asSeconds()) - 90.f);
 
 	constexpr float drag = (1.0 - DRAG);
 	mVelocity = mVelocity * drag;
-	move(mVelocity);
+	move(mVelocity * dt.asSeconds());
 
 	sf::Vector2u borders = mContext.window.getSize();
 
@@ -97,7 +80,6 @@ void Ship::update(const sf::Time& dt)
 	if (getPosition().y > borders.y)
 		setPosition(getPosition().x, 0);
 
-	setScale(SCALE, SCALE);
 }
 
 void Ship::processInput(const sf::Event& event)
@@ -111,6 +93,25 @@ void Ship::processInput(const sf::Event& event)
 			pallet->setDirection(mNormal);
 			mPallets.emplace_back(std::move(pallet));
 		}
+	}
+}
+void Ship::processRealTime()
+{
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		sf::Transform t;
+		t.rotate(-ROT_SPEED);
+		mNormal = t.transformPoint(mNormal);
+	}
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		sf::Transform t;
+		t.rotate(ROT_SPEED);
+		mNormal = t.transformPoint(mNormal);
+	}
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		mVelocity += mNormal * SHIP_SPEED;
 	}
 }
 

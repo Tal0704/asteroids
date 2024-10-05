@@ -14,6 +14,7 @@ public:
 
 	void update(const sf::Time& dt);
 	void processInput(const sf::Event& event);
+	void processRealTime();
 
 	virtual std::size_t getPointCount() const;
 	virtual sf::Vector2f getPoint(std::size_t index) const;
