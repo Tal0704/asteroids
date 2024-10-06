@@ -12,9 +12,6 @@ public:
 	typedef std::unique_ptr<Asteroid> Ptr;
 	Asteroid(const Context& context);
 
-	sf::Vector2f position;
-	sf::Vector2f velocity;
-
 	virtual std::size_t getPointCount() const;
 	virtual sf::Vector2f getPoint(std::size_t index) const;
 
@@ -27,6 +24,6 @@ private:
 	sf::VertexArray mVertecies;
 
 	float mRadius;
-
+	sf::Vector2f mVelocity;
 	Context mContext;
 };

@@ -9,7 +9,7 @@
 #define SCALE 30.f
 
 Asteroid::Asteroid(const Context& context)
-	:mVertecies(sf::PrimitiveType::LineStrip)
+	: mVertecies(sf::PrimitiveType::LineStrip)
 	, mContext(context)
 {
 	std::random_device r;
@@ -30,25 +30,25 @@ Asteroid::Asteroid(const Context& context)
 	mVertecies.append(mVertecies[0]);
 
 	uniformFloatDist = std::uniform_real_distribution<float>(-10.f, 10.f);
-	velocity.x = uniformFloatDist(e);
-	velocity.y = uniformFloatDist(e);
+	mVelocity.x = uniformFloatDist(e);
+	mVelocity.y = uniformFloatDist(e);
 	
 	uniformIntDist = std::uniform_int_distribution<size_t>(100, 400);
 	
-	position.x = uniformIntDist(e);
-	position.y = uniformIntDist(e);
+	setPosition(uniformIntDist(e), uniformIntDist(e));
 }
 
 void Asteroid::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	states.transform.translate(position).scale(SCALE, SCALE);
-
+	states.transform *= getTransform();
+	states.transform.scale(SCALE, SCALE);
+	
 	target.draw(mVertecies, states);
 }
 
 void Asteroid::update(const sf::Time& dt)
 {
-	position += velocity * dt.asSeconds() * ASTEROID_SPEED;
+	move(mVelocity * dt.asSeconds() * ASTEROID_SPEED);
 }
 
 
@@ -64,8 +64,5 @@ sf::Vector2f Asteroid::getPoint(std::size_t index) const
 
 bool Asteroid::collideShip(const Ship& ship)
 {
-	sf::Transform shipTransform = ship.getTransform();
-	sf::Vector2f gloabalShipOrigin = shipTransform.transformPoint(ship.getPosition());
-
-	return distance(position, gloabalShipOrigin) <= (mRadius * SCALE);
+	return distance(getPosition(), ship.getPosition()) <= (mRadius * SCALE);
 }
