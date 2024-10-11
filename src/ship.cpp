@@ -138,3 +138,14 @@ bool Ship::collideAsteroid(const Asteroid& asteroid) const
 {
 	return distance(asteroid.getPosition(), getPosition()) - 10 <= ((asteroid.getRadius()) * SCALE);
 }
+
+bool Ship::collidePallet(const Pallet& pallet) const
+{
+	sf::FloatRect bounds = getGlobalBounds();
+	float value = 6.f;
+	bounds.top += value;
+	bounds.left += value;
+	bounds.width -= value;
+	bounds.height -= value;
+	return bounds.contains(pallet.getPosition());
+}

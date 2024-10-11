@@ -26,6 +26,7 @@ public:
 	const std::vector<Pallet::Ptr>& getPallets();
 
 	bool collideAsteroid(const Asteroid& asteroid) const;
+	bool collidePallet(const Pallet& pallet) const;
 
 private:
 	const Context &mContext;

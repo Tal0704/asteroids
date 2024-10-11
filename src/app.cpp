@@ -89,15 +89,7 @@ void App::processCollisions()
 
 	for(const auto& pallet: pallets)
 	{
-		if(mShip->getGlobalBounds().contains(pallet->getPosition()))
-		{
-			isShipDead = true;
-		}
-	}
-
-	for(const auto& asteroid: mAsteroids)
-	{
-		if(mShip->collideAsteroid(*asteroid))
+		if(mShip->collidePallet(*pallet))
 		{
 			mDebugText.setFillColor(sf::Color::Red);
 			mDebugText.setString("pallet hit the ship!");
@@ -106,6 +98,14 @@ void App::processCollisions()
 		{
 			mDebugText.setFillColor(sf::Color::Green);
 			mDebugText.setString("pallet didn't hit the ship!");
+		}
+	}
+
+	for(const auto& asteroid: mAsteroids)
+	{
+		if(mShip->collideAsteroid(*asteroid))
+		{
+			isShipDead = true;
 		}
 	}
 	/* for(const auto& asteroid: asteroidsToRemove) */
