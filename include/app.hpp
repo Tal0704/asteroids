@@ -21,6 +21,8 @@ private:
 
 	void processCollisions();
 
+	void dead();
+
 	sf::RenderWindow mWindow;
 	Context mContext;
 	std::vector<Asteroid::Ptr> mAsteroids;
@@ -33,8 +35,6 @@ private:
 
 	bool isShipDead = false;
 
-#ifndef NDEBUG
 	sf::Font mFont;
-	sf::Text mDebugText;
-#endif
+	sf::Text mText;
 };

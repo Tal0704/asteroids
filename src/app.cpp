@@ -12,13 +12,8 @@ App::App()
 	{
 		mAsteroids.emplace_back(std::make_unique<Asteroid>(mContext));
 	}
-#ifndef NDEBUG
 	mFont.loadFromFile("media/fonts/PressStart2P.ttf");
-	mDebugText.setFont(mFont);
-	mDebugText.setCharacterSize(10);
-	mDebugText.setFillColor(sf::Color::Green);
-	mDebugText.setString("pallet didn't hit the ship!");
-#endif
+	mText.setFont(mFont);
 }
 
 void App::run()
@@ -61,16 +56,13 @@ void App::update(const sf::Time& dt)
 	for(const auto& pallet: pallets)
 		pallet->update(dt);
 	processCollisions();
-#ifndef NDEBUG
 	if(isShipDead)
-		std::cout << "Dead\n";
-#endif
+		mWindow.close();
 }
 
 void App::render()
 {
 	mWindow.clear();
-	mWindow.draw(mDebugText);
 	mWindow.draw(*mShip);
 	const auto& pallets = mShip->getPallets();
 	for(const auto& pallet: pallets)
@@ -80,10 +72,9 @@ void App::render()
 	mWindow.display();
 }
 
-
 void App::processCollisions()
 {
-	std::vector<Asteroid::Ptr> asteroidsToRemove;
+	std::vector<size_t> asteroidsToRemove;
 	asteroidsToRemove.reserve(mAsteroids.size());
 	const auto& pallets = mShip->getPallets();
 
@@ -93,18 +84,13 @@ void App::processCollisions()
 		{
 			isShipDead = true;
 		}
-		for(const auto& asteroid: mAsteroids)
+
+		for(size_t i = 0; i < mAsteroids.size(); i++)
 		{
+			const Asteroid::Ptr& asteroid = mAsteroids[i];
 			if(pallet->collideAsteroid(*asteroid))
 			{
-				mDebugText.setFillColor(sf::Color::Red);
-				mDebugText.setString("pallet hit the ship!");
-				return;
-			}
-			else
-			{
-				mDebugText.setFillColor(sf::Color::Green);
-				mDebugText.setString("pallet didn't hit the ship!");
+				asteroidsToRemove.emplace_back(i);
 			}
 		}
 	}
@@ -112,6 +98,13 @@ void App::processCollisions()
 	for(const auto& asteroid: mAsteroids)
 	{
 		if(mShip->collideAsteroid(*asteroid))
-		{}
+		{
+			isShipDead = true;
+		}
+	}
+
+	for(size_t i = 0; i < asteroidsToRemove.size(); i++)
+	{
+		mAsteroids.erase(mAsteroids.begin() + asteroidsToRemove[i]);
 	}
 }
