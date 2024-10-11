@@ -6,6 +6,8 @@
 
 typedef sf::Vector2f vector2;
 
+class Asteroid;
+
 class Pallet
 	: public sf::CircleShape
 {
@@ -22,6 +24,7 @@ public:
 
 	float getRadius() const;
 
+	bool collideAsteroid(const Asteroid& asteroid);
 private:
 	Context mContext;
 	vector2 mDirection;

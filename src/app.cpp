@@ -93,26 +93,25 @@ void App::processCollisions()
 		{
 			isShipDead = true;
 		}
+		for(const auto& asteroid: mAsteroids)
+		{
+			if(pallet->collideAsteroid(*asteroid))
+			{
+				mDebugText.setFillColor(sf::Color::Red);
+				mDebugText.setString("pallet hit the ship!");
+				return;
+			}
+			else
+			{
+				mDebugText.setFillColor(sf::Color::Green);
+				mDebugText.setString("pallet didn't hit the ship!");
+			}
+		}
 	}
 
 	for(const auto& asteroid: mAsteroids)
 	{
 		if(mShip->collideAsteroid(*asteroid))
-		{
-			mDebugText.setFillColor(sf::Color::Red);
-			mDebugText.setString("pallet hit the ship!");
-			return;
-		}
-		else
-		{
-			mDebugText.setFillColor(sf::Color::Green);
-			mDebugText.setString("pallet didn't hit the ship!");
-		}
+		{}
 	}
-	/* for(const auto& asteroid: asteroidsToRemove) */
-	/* { */
-	/* 	auto foundAsteroid = std::find_if(mAsteroids.begin(), mAsteroids.end(), */ 
-	/* 			[&](Asteroid::Ptr& a) {return a == asteroid;} ); */
-	/* 	mAsteroids.erase(foundAsteroid); */
-	/* } */
 }
