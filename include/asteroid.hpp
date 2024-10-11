@@ -17,7 +17,7 @@ public:
 
 	void update(const sf::Time& dt);
 
-	bool collideShip(const Ship& ship);
+	float getRadius() const;
 
 private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const;

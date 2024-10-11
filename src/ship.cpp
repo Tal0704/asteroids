@@ -2,6 +2,7 @@
 #include <cmath>
 #include <memory>
 #include <ship.hpp>
+#include <asteroid.hpp>
 
 #define SCALE 30.0f
 #define ORIGIN sf::Vector2f(150.f, 150.f)
@@ -133,3 +134,7 @@ const std::vector<Pallet::Ptr>& Ship::getPallets()
 	return mPallets;
 }
 
+bool Ship::collideAsteroid(const Asteroid& asteroid) const
+{
+	return distance(asteroid.getPosition(), getPosition()) - 10 <= ((asteroid.getRadius()) * SCALE);
+}

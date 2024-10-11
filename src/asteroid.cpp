@@ -62,7 +62,7 @@ sf::Vector2f Asteroid::getPoint(std::size_t index) const
 	return mVertecies[index].position;
 }
 
-bool Asteroid::collideShip(const Ship& ship)
+float Asteroid::getRadius() const
 {
-	return distance(getPosition(), ship.getPosition()) <= (mRadius * SCALE);
+	return mRadius;
 }

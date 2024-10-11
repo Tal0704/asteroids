@@ -5,6 +5,8 @@
 #include <helpers.hpp>
 #include <cassert>
 
+class Asteroid;
+
 class Ship 
 	: public sf::Shape
 {
@@ -22,6 +24,9 @@ public:
 	virtual void draw(sf::RenderTarget& window, sf::RenderStates states) const;
 
 	const std::vector<Pallet::Ptr>& getPallets();
+
+	bool collideAsteroid(const Asteroid& asteroid) const;
+
 private:
 	const Context &mContext;
 	sf::VertexArray mVertecies;
