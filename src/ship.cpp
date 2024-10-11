@@ -136,7 +136,7 @@ const std::vector<Pallet::Ptr>& Ship::getPallets()
 
 bool Ship::collideAsteroid(const Asteroid& asteroid) const
 {
-	return distance(asteroid.getPosition(), getPosition()) - 10 <= ((asteroid.getRadius()) * SCALE);
+	return distance(asteroid.getPosition(), getPosition()) - 10 <= (asteroid.getRadius() * SCALE);
 }
 
 bool Ship::collidePallet(const Pallet& pallet) const

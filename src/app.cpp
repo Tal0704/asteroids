@@ -6,7 +6,7 @@ App::App()
 	, mShip(std::make_unique<Ship>(mContext))
 { 
 	mWindow.setKeyRepeatEnabled(false);
-	const size_t numOfAsteroids = 5;
+	const size_t numOfAsteroids = 10;
 	mAsteroids.reserve(numOfAsteroids);
 	for(size_t i = 0; i < numOfAsteroids; i++)
 	{
@@ -91,13 +91,7 @@ void App::processCollisions()
 	{
 		if(mShip->collidePallet(*pallet))
 		{
-			mDebugText.setFillColor(sf::Color::Red);
-			mDebugText.setString("pallet hit the ship!");
-		}
-		else
-		{
-			mDebugText.setFillColor(sf::Color::Green);
-			mDebugText.setString("pallet didn't hit the ship!");
+			isShipDead = true;
 		}
 	}
 
@@ -105,7 +99,14 @@ void App::processCollisions()
 	{
 		if(mShip->collideAsteroid(*asteroid))
 		{
-			isShipDead = true;
+			mDebugText.setFillColor(sf::Color::Red);
+			mDebugText.setString("pallet hit the ship!");
+			return;
+		}
+		else
+		{
+			mDebugText.setFillColor(sf::Color::Green);
+			mDebugText.setString("pallet didn't hit the ship!");
 		}
 	}
 	/* for(const auto& asteroid: asteroidsToRemove) */
