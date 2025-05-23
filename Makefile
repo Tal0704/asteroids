@@ -18,7 +18,7 @@ SRCS := $(sort $(shell find $(SRC_DIR) -name '*.cpp'))
 
 # Includes
 INCLUDE_DIR = include
-INCLUDES := -I$(INCLUDE_DIR) -IDependencies/SFML/include
+INCLUDES := -I$(INCLUDE_DIR)
 
 # C preprocessor settings
 CPPFLAGS = $(INCLUDES) -MMD -MP
@@ -29,7 +29,7 @@ CXXFLAGS = -std=c++20
 WARNINGS = -Wall -Wpedantic -Wextra -Wno-unused-parameter
 
 # Linker flags
-LDFLAGS = -Llibs/SFML/lib
+LDFLAGS = -Llibs/sfml/lib
 
 # Libraries to link
 LDLIBS = -lsfml-graphics -lsfml-window -lsfml-system

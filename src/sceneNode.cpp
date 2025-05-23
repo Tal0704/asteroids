@@ -1,5 +1,6 @@
 #include <cassert>
 #include <sceneNode.hpp>
+#include <utility>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <algorithm>
 

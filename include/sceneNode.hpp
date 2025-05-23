@@ -3,13 +3,11 @@
 #include <memory>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/Transformable.hpp>
-#include <SFML/System/NonCopyable.hpp>
 #include <SFML/System/Time.hpp>
 
 class SceneNode:
 	public sf::Drawable,
-	public sf::Transformable,
-	public sf::NonCopyable
+	public sf::Transformable
 {
 public:
 	typedef std::unique_ptr<SceneNode> Ptr;

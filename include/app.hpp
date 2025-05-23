@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <asteroid.hpp>
 #include <context.hpp>
+#include <optional>
 #include <ship.hpp>
 #include <memory>
 #include <vector>
@@ -27,7 +28,7 @@ private:
 	Context mContext;
 	std::vector<Asteroid::Ptr> mAsteroids;
 	std::unique_ptr<Ship> mShip;
-	sf::Event mEvent;
+	std::optional<sf::Event> mEvent;
 
 	sf::Clock mClock;
 

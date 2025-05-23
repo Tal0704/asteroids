@@ -1,3 +1,4 @@
+#include <SFML/System/Vector2.hpp>
 #include <pallet.hpp>
 #include <asteroid.hpp>
 
@@ -17,7 +18,7 @@ Pallet::Pallet(float x, float y, Context context)
 	: mContext(context)
 	, mTtl(sf::seconds(1.5))
 {
-	this->setPosition(x, y);
+	this->setPosition(sf::Vector2f(x, y));
 	sf::Shape::update();
 }
 

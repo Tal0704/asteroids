@@ -15,7 +15,7 @@ public:
 	Ship(const Context& context);
 
 	void update(const sf::Time& dt);
-	void processInput(const sf::Event& event);
+	void processInput(const std::optional<sf::Event>& event);
 	void processRealTime();
 
 	virtual std::size_t getPointCount() const;

@@ -1,9 +1,11 @@
 #include <app.hpp>
 
 App::App()
-	: mWindow(sf::VideoMode(400, 400), "Asteroids!!")
+	: mWindow(sf::VideoMode({400, 400}), "Asteroids!!")
 	, mContext(mWindow)
 	, mShip(std::make_unique<Ship>(mContext))
+	, mFont("media/fonts/PressStart2P.ttf")
+	, mText(mFont)
 { 
 	mWindow.setKeyRepeatEnabled(false);
 	const size_t numOfAsteroids = 10;
@@ -12,8 +14,6 @@ App::App()
 	{
 		mAsteroids.emplace_back(std::make_unique<Asteroid>(mContext));
 	}
-	mFont.loadFromFile("media/fonts/PressStart2P.ttf");
-	mText.setFont(mFont);
 }
 
 void App::run()
@@ -36,10 +36,11 @@ void App::run()
 
 void App::processInput()
 {
-	while(mWindow.pollEvent(mEvent))
+	while((mEvent = mWindow.pollEvent()))
 	{
 		mShip->processInput(mEvent);
-		bool isClose = (mEvent.type == sf::Event::Closed) || ((mEvent.type == sf::Event::KeyPressed) && mEvent.key.code == sf::Keyboard::Q);
+		bool isClose = (mEvent->is<sf::Event::Closed>()) || 
+			(mEvent->is<sf::Event::KeyPressed>() && mEvent->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Q);
 		if (isClose)
 			mWindow.close();
 	}

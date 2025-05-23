@@ -1,11 +1,5 @@
 #include <helpers.hpp>
-#include <complex>
-
-float angleFromVect(const sf::Vector2f& v)
-{
-	std::complex c(v.x, v.y);
-	return std::arg(c) * 180 / PI;
-}
+#include <cmath>
 
 float distance(const sf::Vector2f& left, const sf::Vector2f& right)
 {
@@ -31,7 +25,7 @@ std::ostream& operator<<(std::ostream& stream, const sf::Vector2f& v)
 
 std::ostream& operator<<(std::ostream& stream, const sf::FloatRect& v)
 {
-	stream << v.left <<  ", " << v.top;
+	stream << v.position.x <<  ", " << v.position.y;
 	return stream;
 }
 

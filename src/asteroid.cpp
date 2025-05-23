@@ -35,13 +35,13 @@ Asteroid::Asteroid(const Context& context)
 	
 	uniformIntDist = std::uniform_int_distribution<size_t>(100, 400);
 	
-	setPosition(uniformIntDist(e), uniformIntDist(e));
+	setPosition(sf::Vector2f(uniformIntDist(e), uniformIntDist(e)));
 }
 
 void Asteroid::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.transform *= getTransform();
-	states.transform.scale(SCALE, SCALE);
+	states.transform.scale(sf::Vector2f(SCALE, SCALE));
 	
 	target.draw(mVertecies, states);
 }
