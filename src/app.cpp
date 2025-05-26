@@ -4,13 +4,10 @@ App::App()
 	: mWindow(sf::VideoMode({400, 400}), "Asteroids!!")
 	, mContext(mWindow)
 	, mShip(std::make_unique<Ship>(mContext))
-	, mFont("media/fonts/PressStart2P.ttf")
-	, mText(mFont)
 { 
-	mWindow.setKeyRepeatEnabled(false);
-	const size_t numOfAsteroids = 10;
-	mAsteroids.reserve(numOfAsteroids);
-	for(size_t i = 0; i < numOfAsteroids; i++)
+	mWindow.setKeyRepeatEnabled(true);
+	mAsteroids.reserve(10);
+	for(size_t i = 0; i < mAsteroids.capacity(); i++)
 	{
 		mAsteroids.emplace_back(std::make_unique<Asteroid>(mContext));
 	}
@@ -75,8 +72,6 @@ void App::render()
 
 void App::processCollisions()
 {
-	std::vector<size_t> asteroidsToRemove;
-	asteroidsToRemove.reserve(mAsteroids.size());
 	const auto& pallets = mShip->getPallets();
 
 	for(const auto& pallet: pallets)
@@ -91,7 +86,8 @@ void App::processCollisions()
 			const Asteroid::Ptr& asteroid = mAsteroids[i];
 			if(pallet->collideAsteroid(*asteroid))
 			{
-				asteroidsToRemove.emplace_back(i);
+				std::cout << "Killed\n";
+				asteroid->kill();
 			}
 		}
 	}
@@ -104,8 +100,7 @@ void App::processCollisions()
 		}
 	}
 
-	for(size_t i = 0; i < asteroidsToRemove.size(); i++)
-	{
-		mAsteroids.erase(mAsteroids.begin() + asteroidsToRemove[i]);
-	}
+	std::erase_if(mAsteroids, [&](const Asteroid::Ptr& asteroid) -> bool {
+				return asteroid->isFinishedExplosion();
+			});
 }

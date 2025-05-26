@@ -28,7 +28,7 @@ public:
 private:
 	Context mContext;
 	vector2 mDirection;
-	static constexpr float mSpeed = 50.f;
+	static constexpr float mSpeed = 150.f;
 
 	sf::Time mTtl;
 	sf::Time mCreationTime;

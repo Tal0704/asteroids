@@ -39,5 +39,5 @@ bool Pallet::isPendingRemoveal() const
 
 bool Pallet::collideAsteroid(const Asteroid& asteroid)
 {
-	return distance(asteroid.getPosition(), getPosition()) - 1 <= (asteroid.getRadius() * SCALE);
+	return (asteroid.status == Asteroid::Alive) && (distance(asteroid.getPosition(), getPosition()) - 1 <= (asteroid.getRadius() * SCALE));
 }
