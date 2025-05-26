@@ -81,12 +81,10 @@ void App::processCollisions()
 			isShipDead = true;
 		}
 
-		for(size_t i = 0; i < mAsteroids.size(); i++)
+		for(auto& asteroid: mAsteroids)
 		{
-			const Asteroid::Ptr& asteroid = mAsteroids[i];
 			if(pallet->collideAsteroid(*asteroid))
 			{
-				std::cout << "Killed\n";
 				asteroid->kill();
 			}
 		}
