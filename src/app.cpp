@@ -4,11 +4,9 @@ App::App()
 	: mWindow(sf::VideoMode({400, 400}), "Asteroids!!")
 	, mContext(mWindow)
 	, mShip(std::make_unique<Ship>(mContext))
-	, mLives(3)
 	, mDebugFont("media/fonts/PressStart2P.ttf")
 	, mDebugText(mDebugFont)
 { 
-	mDebugText.setString("Lives: 3");
 	mWindow.setKeyRepeatEnabled(true);
 	mAsteroids.reserve(10);
 	for(size_t i = 0; i < mAsteroids.capacity(); i++)
@@ -28,14 +26,14 @@ void App::run()
 		while(timeSinceLastUpdate > fps)
 		{
 			timeSinceLastUpdate -= fps;
-			processInput();
+			processInput(timeSinceLastUpdate);
 			update(fps);
 		}
 		render();
 	}
 }
 
-void App::processInput()
+void App::processInput(const sf::Time& dt)
 {
 	while((mEvent = mWindow.pollEvent()))
 	{
@@ -57,8 +55,14 @@ void App::update(const sf::Time& dt)
 	const auto& pallets = mShip->getPallets();
 	for(const auto& pallet: pallets)
 		pallet->update(dt);
-	processCollisions();
-	if(mLives == 0)
+	static sf::Time timeSinceStart = dt;
+	if (timeSinceStart >= sf::seconds(1)) {
+		processCollisions();
+	} else {
+		timeSinceStart += dt;
+	}
+
+	if(mShip->isDead())
 		mWindow.close();
 }
 
@@ -82,8 +86,7 @@ void App::processCollisions()
 	{
 		if(mShip->collidePallet(*pallet))
 		{
-			mLives--;
-			mDebugText.setString(std::format("Lives: {}", mLives));
+			mShip->destroy();
 		}
 
 		for(auto& asteroid: mAsteroids)
@@ -100,8 +103,7 @@ void App::processCollisions()
 		if(mShip->collideAsteroid(*asteroid))
 		{
 			asteroid->kill();
-			mLives--;
-			mDebugText.setString(std::format("Lives {}", mLives));
+			mShip->destroy();
 		}
 	}
 

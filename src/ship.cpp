@@ -8,15 +8,7 @@
 #define SCALE sf::Vector2f(30.0f, 30.f)
 #define ORIGIN sf::Vector2f(150.f, 150.f)
 
-Ship::Ship(const Context& context, uint8_t lives)
-	: mContext(context)
-	, mVertecies(sf::PrimitiveType::LineStrip, 9)
-	, mTail(sf::PrimitiveType::LineStrip, 3)
-	, mNormal(0, -1)
-	, mClock()
-	, mLives(lives)
-	, mPallets()
-{
+void Ship::initVertecies() {
 	mVertecies[0].position = sf::Vector2f(-0.4f, -0.5f);
 	mVertecies[1].position = sf::Vector2f(0.0f, 0.5f);
 	mVertecies[2].position = sf::Vector2f(0.4f, -0.5f);
@@ -34,6 +26,18 @@ Ship::Ship(const Context& context, uint8_t lives)
 	setPosition(ORIGIN);
 	setRotation(180_deg);
 	setScale(SCALE);
+}
+
+Ship::Ship(const Context& context, uint8_t lives)
+	: mContext(context)
+	, mVertecies(sf::PrimitiveType::LineStrip, 9)
+	, mTail(sf::PrimitiveType::LineStrip, 3)
+	, mNormal(0, -1)
+	, mClock()
+	, mLives(lives)
+	, mPallets()
+{
+	initVertecies();
 }
 
 void Ship::draw(sf::RenderTarget& target, sf::RenderStates states) const
@@ -154,4 +158,8 @@ bool Ship::collidePallet(const Pallet& pallet) const
 
 bool Ship::isDead() const {
 	return mLives == 0;
+}
+void Ship::destroy() {
+	mLives--;
+	initVertecies();
 }

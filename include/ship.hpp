@@ -29,6 +29,8 @@ public:
 	bool collidePallet(const Pallet& pallet) const;
 	bool isDead() const;
 
+	void destroy();
+
 private:
 	const Context &mContext;
 	sf::VertexArray mVertecies;
@@ -40,4 +42,5 @@ private:
 	uint mLives;
 
 	std::vector<Pallet::Ptr> mPallets;
+	void initVertecies();
 };
