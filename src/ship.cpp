@@ -8,12 +8,13 @@
 #define SCALE sf::Vector2f(30.0f, 30.f)
 #define ORIGIN sf::Vector2f(150.f, 150.f)
 
-Ship::Ship(const Context& context)
+Ship::Ship(const Context& context, uint8_t lives)
 	: mContext(context)
 	, mVertecies(sf::PrimitiveType::LineStrip, 9)
 	, mTail(sf::PrimitiveType::LineStrip, 3)
 	, mNormal(0, -1)
 	, mClock()
+	, mLives(lives)
 	, mPallets()
 {
 	mVertecies[0].position = sf::Vector2f(-0.4f, -0.5f);
@@ -139,7 +140,7 @@ const std::vector<Pallet::Ptr>& Ship::getPallets()
 
 bool Ship::collideAsteroid(const Asteroid& asteroid) const
 {
-	return distance(asteroid.getPosition(), getPosition()) - 10 <= (asteroid.getRadius() * SCALE).length();
+	return asteroid.status == Asteroid::Status::Alive && (distance(asteroid.getPosition(), getPosition()) - 10 <= (asteroid.getRadius() * SCALE).length());
 }
 
 bool Ship::collidePallet(const Pallet& pallet) const
@@ -149,4 +150,8 @@ bool Ship::collidePallet(const Pallet& pallet) const
 	bounds.size.x -= value;
 	bounds.size.y -= value;
 	return bounds.contains(pallet.getPosition());
+}
+
+bool Ship::isDead() const {
+	return mLives == 0;
 }

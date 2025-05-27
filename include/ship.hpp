@@ -12,7 +12,7 @@ class Ship
 {
 public:
 	typedef std::unique_ptr<Ship> Ptr;
-	Ship(const Context& context);
+	Ship(const Context& context, uint8_t lives = 3);
 
 	void update(const sf::Time& dt);
 	void processInput(const std::optional<sf::Event>& event);
@@ -27,6 +27,7 @@ public:
 
 	bool collideAsteroid(const Asteroid& asteroid) const;
 	bool collidePallet(const Pallet& pallet) const;
+	bool isDead() const;
 
 private:
 	const Context &mContext;
@@ -36,6 +37,7 @@ private:
 	sf::Vector2f mVelocity;
 	sf::Vector2f mNormal;
 	sf::Clock mClock;
+	uint mLives;
 
 	std::vector<Pallet::Ptr> mPallets;
 };
